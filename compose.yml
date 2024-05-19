@@ -6,6 +6,7 @@ services:
       - 8080:80
     container_name: "dock-press-wordpress"
     hostname: "dock-press-wordpress"
+    env_file: "./.env"
     volumes:
       - wordpress:/var/www/html
     depends_on:
