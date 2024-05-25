@@ -1,0 +1,39 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - 8080:80
+    container_name: "dock-press-wordpress"
+    hostname: "dock-press-wordpress"
+    env_file:
+      - "./docker.env"
+      - "./wordpress.env"
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: "dock-press-mysql"
+    hostname: "dock-press-mysql"
+    env_file:
+      - "./docker.env"
+      - "./mysql.env"
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql:
+    name: "dock-press-mysql"
+  wordpress:
+    name: "dock-press-wordpress"
+  
