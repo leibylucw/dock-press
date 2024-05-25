@@ -6,7 +6,7 @@ services:
       - 8080:80
     container_name: "dock-press-wordpress"
     hostname: "dock-press-wordpress"
-    env_file: "./.env"
+    env_file: "./wordpress.env"
     volumes:
       - wordpress:/var/www/html
     depends_on:
@@ -18,7 +18,7 @@ services:
     restart: always
     container_name: "dock-press-mysql"
     hostname: "dock-press-mysql"
-    env_file: "./.env"
+    env_file: "./mysql.env"
     volumes:
       - mysql:/var/lib/mysql
     healthcheck:
