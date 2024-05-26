@@ -24,6 +24,7 @@ services:
       - "./docker.env"
       - "./mysql.env"
     volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
       - mysql:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
