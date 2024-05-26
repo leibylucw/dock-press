@@ -16,7 +16,7 @@ NOTE: The default configuration options for these programs are sufficient for ou
 With Git:
 
 ```shell
-git clone https://github.com/leibylucw/dock-press
+git clone https://github.com/leibylucw/dock-press.git
 cd dock-press
 ```
 
@@ -26,4 +26,3 @@ Or with gh:
 gh repo clone leibylucw/dock-press
 cd dock-press
 ```
-
