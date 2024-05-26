@@ -1,5 +1,5 @@
 # dock-press
-A project template to Dockerize a WordPress site
+A project to Dockerize a WordPress site
 
 NOTE: This README is currently incomplete. Details are filled out as work is merged into the main branch. Refer to the `docs` directory for any additional documentation.
 
