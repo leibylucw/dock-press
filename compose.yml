@@ -12,7 +12,6 @@ services:
       - "./docker.env"
       - "./wordpress.env"
     volumes:
-      - ./wp-content/plugins:/var/ww/html/wp-content/plugins
       - wordpress:/var/www/html
     depends_on:
       mysql:
