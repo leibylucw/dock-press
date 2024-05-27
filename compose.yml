@@ -1,6 +1,8 @@
 services:
   wordpress:
-    image: wordpress:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile-wordpress
     restart: always
     ports:
       - 8080:80
@@ -10,6 +12,7 @@ services:
       - "./docker.env"
       - "./wordpress.env"
     volumes:
+      - ./wp-content/plugins:/var/ww/html/wp-content/plugins
       - wordpress:/var/www/html
     depends_on:
       mysql:
@@ -37,4 +40,3 @@ volumes:
     name: "dock-press-mysql"
   wordpress:
     name: "dock-press-wordpress"
-  
