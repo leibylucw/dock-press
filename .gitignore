@@ -4,6 +4,10 @@
 # DB dump files
 *.sql
 
+# Compose file
+compose.yml
+compose.yaml
+
 # Virtualenvs
 .venv/
 
