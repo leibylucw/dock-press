@@ -6,3 +6,6 @@
 
 # Virtualenvs
 .venv/
+
+# wp-content
+wp-content/
