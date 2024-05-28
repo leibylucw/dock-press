@@ -3,3 +3,4 @@ FROM wordpress:latest
 WORKDIR /var/www/html
 
 COPY wp-content/plugins wp-content/plugins
+COPY wp-content/uploads wp-content/uploads
