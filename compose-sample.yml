@@ -11,6 +11,10 @@ services:
     env_file:
       - "./docker.env"
       - "./wordpress.env"
+    environment:
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', getenv('WP_HOME'));
+        define('WP_SITEURL', getenv('WP_SITEURL'));
     volumes:
       - ./wp-content/themes:/var/www/html/wp-content/themes:ro
       - wordpress:/var/www/html
