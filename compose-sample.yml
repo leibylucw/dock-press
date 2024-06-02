@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-wordpress
+    image: dock-press-wordpress
     restart: always
     ports:
       - 8080:80
@@ -23,7 +24,10 @@ services:
         condition: service_healthy
 
   mysql:
-    image: mysql:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile-mysql
+    image: dock-press-mysql
     restart: always
     container_name: "dock-press-mysql"
     hostname: "dock-press-mysql"
@@ -31,7 +35,6 @@ services:
       - "./docker.env"
       - "./mysql.env"
     volumes:
-      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
       - mysql:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
