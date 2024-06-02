@@ -2,33 +2,30 @@ import argparse
 import os
 import subprocess
 
-import dotenv
-
 DUMP_FILE = 'db'
 DUMP_FILE_EXTENSION = '.sql'
-DUMP_FILE_ENCODING = 'utf-8'
-ENVIRONMENT_VARIABLE_FILE_NAME = 'mysql.env'
-ENVIRONMENT_VARIABLE_FILE_PATH = os.path.join(os.path.dirname(__file__), ENVIRONMENT_VARIABLE_FILE_NAME)
-dotenv.load_dotenv(dotenv_path=ENVIRONMENT_VARIABLE_FILE_PATH)
+DUMP_FILE_NAME = f'{DUMP_FILE}{DUMP_FILE_EXTENSION}'
+EXPORT_DIRECTORY = 'exported_assets'
+WORDPRESS_DIRECTORY = '/var/www/html/wp-content'
 
 
 def exportDatabase():
-	command = f'docker compose exec -it mysql bash -c "mysqldump -p{os.getenv('MYSQL_ROOT_PASSWORD')} --databases {os.getenv('MYSQL_DATABASE')}"'
-	with open(f'{DUMP_FILE}{DUMP_FILE_EXTENSION}', 'w', encoding=DUMP_FILE_ENCODING) as file:
-		result = subprocess.run(command, stdout=file, text=True)
+	print('Exporting database...', end='', flush=True)
+
+	createDBDumpCommand = f'docker compose exec -it mysql bash -c "mysqldump -p$MYSQL_ROOT_PASSWORD --databases $MYSQL_DATABASE > {DUMP_FILE_NAME}"'
+	copyDBDumpCommand = f'docker compose cp mysql:/{DUMP_FILE_NAME} ./{EXPORT_DIRECTORY}'
+
+	runCommands([createDBDumpCommand, copyDBDumpCommand])
+
+	print('Done')
 
 
 def exportPlugins():
 	print('Exporting plugins...', end='', flush=True)
 
-	command = 'docker compose cp wordpress:/var/www/html/wp-content/plugins ./wp-content'
+	copyPluginsCommand = f'docker compose cp wordpress:{WORDPRESS_DIRECTORY}/plugins ./{EXPORT_DIRECTORY}'
 
-	try:
-		result = subprocess.run(command, check=True, capture_output=True, text=True)
-	except subprocess.CalledProcessError as e:
-		print(f"\nCommand '{e.cmd}' returned non-zero exit status {e.returncode}")
-		print(f'Error output: {e.stderr}')
-		raise
+	runCommands([copyPluginsCommand])
 
 	print('Done')
 
@@ -36,16 +33,29 @@ def exportPlugins():
 def exportUploads():
 	print('Exporting uploads...', end='', flush=True)
 
-	command = 'docker compose cp wordpress:/var/www/html/wp-content/uploads ./wp-content'
+	copyUploadsCommand = f'docker compose cp wordpress:{WORDPRESS_DIRECTORY}/uploads ./{EXPORT_DIRECTORY}'
 
-	try:
-		result = subprocess.run(command, check=True, capture_output=True, text=True)
-	except subprocess.CalledProcessError as e:
-		print(f"\nCommand '{e.cmd}' returned non-zero exit status {e.returncode}")
-		print(f'Error output: {e.stderr}')
-		raise
+	runCommands([copyUploadsCommand])
 
 	print('Done')
+
+
+def makeExportDirectory():
+	if not os.path.exists(EXPORT_DIRECTORY):
+		os.makedirs(EXPORT_DIRECTORY)
+
+
+def runCommands(commands):
+	if not isinstance(commands, list):
+		raise TypeError(f'commands is of type {type(commands)}, must be list')
+
+	for command in commands:
+		try:
+			result = subprocess.run(command, check=True, capture_output=True, text=True)
+		except subprocess.CalledProcessError as e:
+			print(f"\nCommand '{e.cmd}' returned non-zero exit status {e.returncode}")
+			print(f'Error output: {e.stderr}')
+			raise
 
 
 def buildArgs():
@@ -63,6 +73,8 @@ def buildArgs():
 
 def main():
 	args = buildArgs()
+
+	makeExportDirectory()
 
 	if args.database:
 		exportDatabase()

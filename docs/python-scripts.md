@@ -24,14 +24,17 @@ See the dev notes section for more info about pre-commit hooks. For now, all you
 pre-commit install
 ```
 
-### Create a Virtual Environment (virtualenv)
+### **SKIP THIS SECTION
+This section originally instructed users to set up a virtualenv, but it currently is not needed.
+
+#### Create a Virtual Environment (virtualenv)
 A virtual environment (virtualenv) must be used when running or developing these scripts. All subsequent sections assume that you have created the virtualenv and activated it. To create it, run the following command:
 
 ```shell
 python -m venv .venv
 ```
 
-### Activate the Virtualenv
+#### Activate the Virtualenv
 For Command Prompt on Windows:
 
 ```cmd
@@ -47,7 +50,7 @@ For PowerShell on Windows:
 For Linux/MacOS:
 
 ```sh
-source .venv/Scripts/activate
+source .venv/bin/activate
 ```
 
 To deactivate the virtualenv on all platforms:
@@ -56,7 +59,7 @@ To deactivate the virtualenv on all platforms:
 deactivate
 ```
 
-### Install Script Requirements
+#### Install Script Requirements
 These scripts requires certain dependencies to be installed. To install them, run the following commands:
 
 ```shell
@@ -64,7 +67,7 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### General Development Notes
+## General Development Notes
 You will notice from the various configuration files in the repo that there are several tools to ensure certain code hygiene and quality conventions are enforced. You may wish to become familiar with these tools and the coding style configurations therein. For more info, please refer to:
 * [Ruff](https://github.com/astral-sh/ruff): used for code linting and formatting
 * [pre-commit](https://github.com/pre-commit/pre-commit): used for managing pre-commit hooks
