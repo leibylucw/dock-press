@@ -13,3 +13,6 @@ compose.yaml
 
 # wp-content
 wp-content/
+
+# Exported assets
+exported_assets/
